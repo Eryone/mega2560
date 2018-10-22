@@ -45,6 +45,7 @@ char job_recovery_commands[BUFSIZE + APPEND_CMD_COUNT][MAX_CMD_SIZE];
 // Extern
 extern uint8_t active_extruder, commands_in_queue, cmd_queue_index_r;
 
+
 #if ENABLED(DEBUG_POWER_LOSS_RECOVERY)
   void debug_print_job_recovery(const bool recovery) {
     SERIAL_PROTOCOLLNPGM("---- Job Recovery Info ----");

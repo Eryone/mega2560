@@ -35,6 +35,16 @@
 #include "utility.h"
 #include "parser.h"
 
+
+#if POWER_LOSS_RECOVER_SUPER_CAP
+#include "power_loss_recovery.h"
+
+/*	extern unsigned int Z_t,T0_t,B_t;
+	extern uint32_t pos_t,E_t;
+	extern  char P_file_name[13],recovery;
+	extern char print_dir[13];
+	*/
+#endif
 #if HAS_BUZZER && DISABLED(LCD_USE_I2C_BUZZER)
   #include "buzzer.h"
 #endif
@@ -635,6 +645,77 @@ uint16_t max_display_update_time = 0;
   }
 
 #endif // ULTIPANEL
+
+#if POWER_LOSS_RECOVER_SUPER_CAP
+void lcd_resume_menu_ok(void) 
+{
+  char tmp_n[64+10];
+  recovery_detect_cap.recovery=0;
+//  Config_StoreSettings();
+  //Config_RetrieveSettings();
+  lcd_goto_screen(lcd_status_screen);
+ // enquecommand("M930"); 
+  SERIAL_ECHOLN(recovery_detect_cap.file_name);
+  recovery_detect_cap.recovery=1;
+  
+  sprintf_P(tmp_n,PSTR("G92 Z%u.%u"),recovery_detect_cap.Z_t/10,recovery_detect_cap.Z_t%10);
+  SERIAL_ECHOLN(tmp_n);
+  enqueue_and_echo_command(tmp_n);
+  //////////////////
+  sprintf_P(tmp_n,PSTR("G92 E%u"),recovery_detect_cap.E_t);
+  SERIAL_ECHOLN(tmp_n);
+  enqueue_and_echo_command(tmp_n);
+  //////////////
+  //////////////////
+  sprintf_P(tmp_n,PSTR("M104 S%u"),recovery_detect_cap.T0_t);
+  SERIAL_ECHOLN(tmp_n);
+  enqueue_and_echo_command(tmp_n);
+  //////////////
+}
+void lcd_resume_menu_cancel(void) 
+{
+   char tmp_n[64+10];
+   //Config_StoreSettings();
+   //Config_RetrieveSettings();
+  recovery_detect_cap.recovery=0;
+  recovery_detect_cap.file_name[0]=0;  
+  
+ // (void)settings.poweroff_save();
+  sprintf_P(tmp_n,PSTR("M500"));
+  SERIAL_ECHOLN(tmp_n);
+  enqueue_and_echo_command(tmp_n);
+  lcd_goto_screen(lcd_status_screen);
+   
+ 
+}
+
+void lcd_resume_menu0(void) 
+{
+  START_MENU();
+  //////////
+  MENU_ITEM(submenu, "Resume print ?", lcd_resume_menu0);
+  MENU_ITEM(submenu, "Yes  ", lcd_resume_menu_ok); 
+  MENU_ITEM(submenu, "NO  ", lcd_resume_menu_cancel);
+ /* lcd.setCursor(0,0);
+  lcd.print("Resume print ?  ");
+  
+  MENU_ITEM(submenu, "", lcd_resume_menu_ok);
+  lcd.setCursor(1,1);
+  lcd.print("Yes  ");
+  MENU_ITEM(submenu, "", lcd_resume_menu_cancel);
+  lcd.setCursor(1,2);
+  lcd.print("No  ");*/
+  END_MENU();
+
+}
+
+
+void lcd_resume_menu(void) 
+{
+	lcd_goto_screen(lcd_resume_menu0);
+
+}
+#endif
 
 /**
  *
@@ -4014,6 +4095,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
       START_MENU();
       MENU_BACK(MSG_MAIN);
       card.getWorkDirName();
+  
       if (card.filename[0] == '/') {
         #if !PIN_EXISTS(SD_DETECT)
           MENU_ITEM(function, LCD_STR_REFRESH MSG_REFRESH, lcd_sd_refresh);
@@ -4966,6 +5048,11 @@ void lcd_quick_feedback(const bool clear_buttons) {
         last_sdfile_encoderPosition = encoderPosition;  // Save which file was selected for later use
       #endif
       card.openAndPrintFile(theCard.filename);
+#if POWER_LOSS_RECOVER_SUPER_CAP	  
+	  strcpy(recovery_detect_cap.file_name,  theCard.filename);
+      SERIAL_ECHOLN(theCard.filename);
+	  recovery_detect_cap.recovery=0;
+#endif	  
       lcd_return_to_status();
       lcd_reset_status();
     }
@@ -5375,7 +5462,11 @@ void lcd_update() {
       // Return to Status Screen after a timeout
       if (currentScreen == lcd_status_screen || defer_return_to_status)
         return_to_status_ms = ms + LCD_TIMEOUT_TO_STATUS;
+#if POWER_LOSS_RECOVER_SUPER_CAP		
+      else if (ELAPSED(ms, return_to_status_ms)&&(recovery_detect_cap.recovery!=3))
+#else
       else if (ELAPSED(ms, return_to_status_ms))
+#endif	  
         lcd_return_to_status();
 
     #endif // ULTIPANEL

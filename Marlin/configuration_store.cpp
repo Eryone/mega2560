@@ -54,7 +54,11 @@
 #include "stepper.h"
 #include "parser.h"
 #include "vector_3.h"
+#include "power_loss_recovery.h"
 
+#if POWER_LOSS_RECOVER_SUPER_CAP
+	#include "power_loss_recovery.h"
+#endif
 #if ENABLED(MESH_BED_LEVELING)
   #include "mesh_bed_leveling.h"
 #endif
@@ -947,7 +951,9 @@ void MarlinSettings::postprocess() {
 
       eeprom_error |= size_error(eeprom_size);
     }
-
+#if POWER_LOSS_RECOVER_SUPER_CAP	
+    power_lose_save();
+#endif	
     //
     // UBL Mesh
     //
@@ -958,7 +964,72 @@ void MarlinSettings::postprocess() {
 
     return !eeprom_error;
   }
+#if POWER_LOSS_RECOVER_SUPER_CAP  
+#define EEPROM_OFFSET_POWEROFF 800
 
+  bool MarlinSettings::power_lose_save() { 
+
+	uint16_t working_crc = 0;
+	EEPROM_START();
+	eeprom_index = EEPROM_OFFSET_POWEROFF;
+    
+	EEPROM_SKIP(working_crc); // Skip the checksum slot
+	working_crc = 0; 
+	EEPROM_WRITE(recovery_detect_cap.file_name);
+	EEPROM_WRITE(recovery_detect_cap.Z_t);
+	EEPROM_WRITE(recovery_detect_cap.E_t);
+	EEPROM_WRITE(recovery_detect_cap.pos_t);
+	EEPROM_WRITE(recovery_detect_cap.T0_t);
+	EEPROM_WRITE(recovery_detect_cap.B_t);
+	EEPROM_WRITE(recovery_detect_cap.recovery);
+	
+	
+	const uint16_t final_crc = working_crc;
+	const int eeprom_size = eeprom_index;
+	eeprom_index = EEPROM_OFFSET_POWEROFF;
+	EEPROM_WRITE(final_crc);
+	SERIAL_ECHOLN("save3");
+      /*
+	SERIAL_ECHO_START();
+	SERIAL_ECHOPAIR("poweroff Stored (", eeprom_size - EEPROM_OFFSET_POWEROFF);
+	SERIAL_ECHOPAIR(" bytes; crc ", (uint32_t)final_crc);
+	SERIAL_ECHOLNPGM(")");
+	SERIAL_ECHOPAIR("write file name: ",P_file_name);
+*/
+	
+ }
+
+  bool MarlinSettings::power_lose_load() {
+	uint16_t working_crc = 0;
+	uint16_t stored_crc;
+	EEPROM_START();
+	eeprom_index = EEPROM_OFFSET_POWEROFF;
+	EEPROM_READ(stored_crc);
+	working_crc=0;
+	EEPROM_READ(recovery_detect_cap.file_name);
+	EEPROM_READ(recovery_detect_cap.Z_t);
+	EEPROM_READ(recovery_detect_cap.E_t);
+	EEPROM_READ(recovery_detect_cap.pos_t);
+	EEPROM_READ(recovery_detect_cap.T0_t);
+	EEPROM_READ(recovery_detect_cap.B_t);
+	EEPROM_READ(recovery_detect_cap.recovery);
+
+	
+	if (working_crc == stored_crc) {
+//#if ENABLED(EEPROM_CHITCHAT)
+		SERIAL_ECHO_START();
+		SERIAL_ECHOPAIR("poweroff stored settings retrieved (", eeprom_index - EEPROM_OFFSET_POWEROFF);
+		SERIAL_ECHOPAIR(" bytes; crc ", (uint32_t)working_crc);
+		SERIAL_ECHOLNPGM(")");
+		SERIAL_ECHOPAIR("read file name: ",recovery_detect_cap.file_name);
+//#endif
+	}
+	else{
+		SERIAL_ECHOPAIR(" \r\nbytes; crc error ", (uint32_t)working_crc);
+		SERIAL_ECHOPAIR(" \r\nbytes; crc error ", (uint32_t)stored_crc);
+	}
+  }
+ #endif 
   /**
    * M501 - Retrieve Configuration
    */
@@ -986,6 +1057,8 @@ void MarlinSettings::postprocess() {
         SERIAL_ECHOLNPGM(" Marlin=" EEPROM_VERSION ")");
       #endif
       eeprom_error = true;
+		reset();
+      save();
     }
     else {
       float dummy = 0;
@@ -1526,6 +1599,7 @@ void MarlinSettings::postprocess() {
         SERIAL_ECHO_START();
         SERIAL_ECHOPAIR("Index: ", int(eeprom_index - (EEPROM_OFFSET)));
         SERIAL_ECHOLNPAIR(" Size: ", datasize());
+	  
       }
       else if (working_crc != stored_crc) {
         eeprom_error = true;
@@ -1591,7 +1665,9 @@ void MarlinSettings::postprocess() {
     #if ENABLED(EEPROM_CHITCHAT) && DISABLED(DISABLE_M503)
       if (!validating) report();
     #endif
-
+#if POWER_LOSS_RECOVER_SUPER_CAP	
+	(void)settings.power_lose_load();
+#endif
     return !eeprom_error;
   }
 

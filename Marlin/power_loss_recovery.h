@@ -35,6 +35,24 @@
 //#define SAVE_EACH_CMD_MODE
 //#define DEBUG_POWER_LOSS_RECOVERY
 
+
+typedef struct 
+{
+	char file_name[14];
+	char recovery;//=0 idle,=1~2 recoverying,=3 power down
+	unsigned int Z_t;
+	unsigned int T0_t;
+	unsigned int B_t;
+	uint32_t pos_t;
+	uint32_t E_t;
+
+} recovery_D;
+
+extern 	recovery_D recovery_detect_cap;
+
+
+
+
 typedef struct {
   uint8_t valid_head;
 

@@ -55,7 +55,7 @@ public:
       const bool re_sort=false
     #endif
   );
-  void getStatus();
+  uint32_t getStatus();
   void printingHasFinished();
   void printFilename();
 
@@ -120,6 +120,7 @@ public:
   bool saving, logging, sdprinting, cardOK, filenameIsDir;
   char filename[FILENAME_LENGTH], longFilename[LONG_FILENAME_LENGTH];
   int8_t autostart_index;
+   uint32_t filesize, sdpos;
 private:
   SdFile root, workDir, workDirParents[MAX_DIR_DEPTH];
   uint8_t workDirDepth;
@@ -187,7 +188,7 @@ private:
   uint8_t file_subcall_ctr;
   uint32_t filespos[SD_PROCEDURE_DEPTH];
   char proc_filenames[SD_PROCEDURE_DEPTH][MAXPATHNAMELENGTH];
-  uint32_t filesize, sdpos;
+  //uint32_t filesize, sdpos;
 
   LsAction lsAction; //stored for recursion.
   uint16_t nrFiles; //counter for the files in the current directory and recycled as position counter for getting the nrFiles'th name in the directory.

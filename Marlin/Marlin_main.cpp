@@ -267,6 +267,12 @@
 #include "types.h"
 #include "parser.h"
 
+
+#if  POWER_LOSS_RECOVER_SUPER_CAP
+	#include "power_loss_recovery.h"
+	recovery_D recovery_detect_cap;
+#endif
+	extern char lcd_status_message[];
 #if ENABLED(AUTO_POWER_CONTROL)
   #include "power.h"
 #endif
@@ -10091,6 +10097,8 @@ void quickstop_stepper() {
   SYNC_PLAN_POSITION_KINEMATIC();
 }
 
+
+
 #if HAS_LEVELING
 
   //#define M420_C_USE_MEAN
@@ -14690,6 +14698,20 @@ void setup() {
   #if ENABLED(USE_WATCHDOG)
     watchdog_init();
   #endif
+#if POWER_LOSS_RECOVER_SUPER_CAP  
+ /////////////
+  pinMode(44, INPUT);
+   
+  if(recovery_detect_cap.recovery==3)
+   {
+	   lcd_resume_menu() ;
+	   SERIAL_ECHOLN("resume 3");
+
+   }
+  else
+  	 SERIAL_ECHOLN("resume 0");
+   
+#endif  
 }
 
 /**
@@ -14785,6 +14807,43 @@ void loop() {
       if (++cmd_queue_index_r >= BUFSIZE) cmd_queue_index_r = 0;
     }
   }
+#if POWER_LOSS_RECOVER_SUPER_CAP  
+ if((commands_in_queue==0)&&(recovery_detect_cap.recovery==1))
+	  {
+	   //////////////////
+	    char dat_tmp[96];
+		sprintf_P(dat_tmp,PSTR("M190 S%u"),recovery_detect_cap.B_t);
+		SERIAL_ECHOLN(dat_tmp);
+		enqueue_and_echo_command(dat_tmp);
+		sprintf_P(dat_tmp,PSTR("M109 T0 S%u"),recovery_detect_cap.T0_t);
+		SERIAL_ECHOLN(dat_tmp);
+		enqueue_and_echo_command(dat_tmp);
+		sprintf_P(dat_tmp,PSTR("G28 X"));
+		SERIAL_ECHOLN(dat_tmp);
+		enqueue_and_echo_command(dat_tmp);
+		sprintf_P(dat_tmp,PSTR("G28 Y"));
+		SERIAL_ECHOLN(dat_tmp);
+		enqueue_and_echo_command(dat_tmp);			 
+		SBI(axis_homed, Z_AXIS);
+		SBI(axis_known_position, Z_AXIS);
+		recovery_detect_cap.recovery=2;
+	  }
+	if((commands_in_queue==0)&&(recovery_detect_cap.recovery==2))
+	{
+		char dat_tmp[96];
+		sprintf(dat_tmp,"M32 S%lu !%s",recovery_detect_cap.pos_t,recovery_detect_cap.file_name);		 
+		SERIAL_ECHOLN(dat_tmp);
+			
+
+	      //memset(print_dir,0,sizeof(print_dir));
+	    recovery_detect_cap.recovery=0;
+	    settings.power_lose_save();		
+		enqueue_and_echo_command(dat_tmp);
+		SERIAL_ECHOLN(dat_tmp);
+	 
+	}   
+  
+ #endif 
   endstops.event_handler();
   idle();
 }

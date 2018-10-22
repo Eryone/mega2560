@@ -31,6 +31,12 @@
 #include "language.h"
 #include "printcounter.h"
 
+
+#if POWER_LOSS_RECOVER_SUPER_CAP
+#include "power_loss_recovery.h"
+#endif
+
+
 #if ENABLED(POWER_LOSS_RECOVERY)
   #include "power_loss_recovery.h"
 #endif
@@ -401,6 +407,10 @@ void CardReader::openFile(char * const path, const bool read, const bool subcall
     if (file.open(curDir, fname, O_READ)) {
       filesize = file.fileSize();
       sdpos = 0;
+#if POWER_LOSS_RECOVER_SUPER_CAP 
+	  strcpy(recovery_detect_cap.file_name,  fname);
+      SERIAL_ECHOLN(recovery_detect_cap.file_name);
+#endif	  
       SERIAL_PROTOCOLPAIR(MSG_SD_FILE_OPENED, fname);
       SERIAL_PROTOCOLLNPAIR(MSG_SD_SIZE, filesize);
       SERIAL_PROTOCOLLNPGM(MSG_SD_FILE_SELECTED);
@@ -455,15 +465,18 @@ void CardReader::removeFile(const char * const name) {
   }
 }
 
-void CardReader::getStatus() {
+uint32_t CardReader::getStatus() {
+  uint32_t ret=0;	
   if (cardOK && sdprinting) {
     SERIAL_PROTOCOLPGM(MSG_SD_PRINTING_BYTE);
     SERIAL_PROTOCOL(sdpos);
     SERIAL_PROTOCOLCHAR('/');
     SERIAL_PROTOCOLLN(filesize);
+	ret=sdpos;
   }
   else
     SERIAL_PROTOCOLLNPGM(MSG_SD_NOT_PRINTING);
+  return ret;
 }
 
 void CardReader::write_command(char *buf) {
@@ -889,6 +902,7 @@ uint16_t CardReader::get_num_Files() {
 void CardReader::printingHasFinished() {
   planner.synchronize();
   file.close();
+  enqueue_and_echo_commands_P(PSTR("G28 XY"));
   if (file_subcall_ctr > 0) { // Heading up to a parent file that called current as a procedure.
     file_subcall_ctr--;
     openFile(proc_filenames[file_subcall_ctr], true, true);
