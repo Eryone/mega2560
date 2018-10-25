@@ -14704,13 +14704,19 @@ void setup() {
    
   if(recovery_detect_cap.recovery==3)
    {
-	   lcd_resume_menu() ;
+   	   char tmp_d[96];
+	   lcd_recover_menu() ;
 	   SERIAL_ECHOLN("resume 3");
+	   sprintf_P(tmp_d,PSTR("Z%u,E%lu,P%lu,T%u,B%u,"),recovery_detect_cap.Z_t,recovery_detect_cap.E_t,recovery_detect_cap.pos_t,recovery_detect_cap.T0_t,recovery_detect_cap.B_t);
+	   SERIAL_ECHOLN(tmp_d);
+	   sprintf_P(tmp_d,PSTR("%s,"),recovery_detect_cap.file_name);
+	   SERIAL_ECHOLN(tmp_d);
 
    }
   else
   	 SERIAL_ECHOLN("resume 0");
-   
+
+  
 #endif  
 }
 

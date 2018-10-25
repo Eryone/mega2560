@@ -39,11 +39,6 @@
 #if POWER_LOSS_RECOVER_SUPER_CAP
 #include "power_loss_recovery.h"
 
-/*	extern unsigned int Z_t,T0_t,B_t;
-	extern uint32_t pos_t,E_t;
-	extern  char P_file_name[13],recovery;
-	extern char print_dir[13];
-	*/
 #endif
 #if HAS_BUZZER && DISABLED(LCD_USE_I2C_BUZZER)
   #include "buzzer.h"
@@ -647,40 +642,28 @@ uint16_t max_display_update_time = 0;
 #endif // ULTIPANEL
 
 #if POWER_LOSS_RECOVER_SUPER_CAP
-void lcd_resume_menu_ok(void) 
+void lcd_recover_ok(void) 
 {
-  char tmp_n[64+10];
+  char tmp_n[64];
   recovery_detect_cap.recovery=0;
-//  Config_StoreSettings();
-  //Config_RetrieveSettings();
   lcd_goto_screen(lcd_status_screen);
- // enquecommand("M930"); 
   SERIAL_ECHOLN(recovery_detect_cap.file_name);
-  recovery_detect_cap.recovery=1;
-  
+  recovery_detect_cap.recovery=1; 
   sprintf_P(tmp_n,PSTR("G92 Z%u.%u"),recovery_detect_cap.Z_t/10,recovery_detect_cap.Z_t%10);
   SERIAL_ECHOLN(tmp_n);
   enqueue_and_echo_command(tmp_n);
-  //////////////////
   sprintf_P(tmp_n,PSTR("G92 E%u"),recovery_detect_cap.E_t);
   SERIAL_ECHOLN(tmp_n);
   enqueue_and_echo_command(tmp_n);
-  //////////////
-  //////////////////
   sprintf_P(tmp_n,PSTR("M104 S%u"),recovery_detect_cap.T0_t);
   SERIAL_ECHOLN(tmp_n);
   enqueue_and_echo_command(tmp_n);
-  //////////////
 }
-void lcd_resume_menu_cancel(void) 
+void lcd_cover_cancel(void) 
 {
-   char tmp_n[64+10];
-   //Config_StoreSettings();
-   //Config_RetrieveSettings();
+   char tmp_n[32];
   recovery_detect_cap.recovery=0;
   recovery_detect_cap.file_name[0]=0;  
-  
- // (void)settings.poweroff_save();
   sprintf_P(tmp_n,PSTR("M500"));
   SERIAL_ECHOLN(tmp_n);
   enqueue_and_echo_command(tmp_n);
@@ -689,30 +672,20 @@ void lcd_resume_menu_cancel(void)
  
 }
 
-void lcd_resume_menu0(void) 
+void lcd_recovery(void) 
 {
   START_MENU();
-  //////////
-  MENU_ITEM(submenu, "Resume print ?", lcd_resume_menu0);
-  MENU_ITEM(submenu, "Yes  ", lcd_resume_menu_ok); 
-  MENU_ITEM(submenu, "NO  ", lcd_resume_menu_cancel);
- /* lcd.setCursor(0,0);
-  lcd.print("Resume print ?  ");
-  
-  MENU_ITEM(submenu, "", lcd_resume_menu_ok);
-  lcd.setCursor(1,1);
-  lcd.print("Yes  ");
-  MENU_ITEM(submenu, "", lcd_resume_menu_cancel);
-  lcd.setCursor(1,2);
-  lcd.print("No  ");*/
+  MENU_ITEM(submenu, "Resume Print ?", lcd_recovery);
+  MENU_ITEM(submenu, "YES  ", lcd_recover_ok); 
+  MENU_ITEM(submenu, "NO  ", lcd_cover_cancel);
   END_MENU();
 
 }
 
 
-void lcd_resume_menu(void) 
+void lcd_recover_menu(void) 
 {
-	lcd_goto_screen(lcd_resume_menu0);
+	lcd_goto_screen(lcd_recovery);
 
 }
 #endif

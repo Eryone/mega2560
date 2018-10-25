@@ -39,12 +39,12 @@
 typedef struct 
 {
 	char file_name[14];
-	char recovery;//=0 idle,=1~2 recoverying,=3 power down
 	unsigned int Z_t;
 	unsigned int T0_t;
 	unsigned int B_t;
 	uint32_t pos_t;
 	uint32_t E_t;
+	char recovery;//=0 idle,=1~2 recoverying,=3 power down
 
 } recovery_D;
 

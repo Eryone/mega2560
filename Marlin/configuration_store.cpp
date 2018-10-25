@@ -975,14 +975,8 @@ void MarlinSettings::postprocess() {
     
 	EEPROM_SKIP(working_crc); // Skip the checksum slot
 	working_crc = 0; 
-	EEPROM_WRITE(recovery_detect_cap.file_name);
-	EEPROM_WRITE(recovery_detect_cap.Z_t);
-	EEPROM_WRITE(recovery_detect_cap.E_t);
-	EEPROM_WRITE(recovery_detect_cap.pos_t);
-	EEPROM_WRITE(recovery_detect_cap.T0_t);
-	EEPROM_WRITE(recovery_detect_cap.B_t);
-	EEPROM_WRITE(recovery_detect_cap.recovery);
-	
+
+	EEPROM_WRITE(recovery_detect_cap);
 	
 	const uint16_t final_crc = working_crc;
 	const int eeprom_size = eeprom_index;
@@ -1006,14 +1000,8 @@ void MarlinSettings::postprocess() {
 	eeprom_index = EEPROM_OFFSET_POWEROFF;
 	EEPROM_READ(stored_crc);
 	working_crc=0;
-	EEPROM_READ(recovery_detect_cap.file_name);
-	EEPROM_READ(recovery_detect_cap.Z_t);
-	EEPROM_READ(recovery_detect_cap.E_t);
-	EEPROM_READ(recovery_detect_cap.pos_t);
-	EEPROM_READ(recovery_detect_cap.T0_t);
-	EEPROM_READ(recovery_detect_cap.B_t);
-	EEPROM_READ(recovery_detect_cap.recovery);
 
+	EEPROM_READ(recovery_detect_cap);
 	
 	if (working_crc == stored_crc) {
 //#if ENABLED(EEPROM_CHITCHAT)

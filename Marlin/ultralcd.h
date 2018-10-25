@@ -53,7 +53,7 @@
   void lcd_kill_screen();
   void kill_screen(const char* lcd_msg);
 #if POWER_LOSS_RECOVER_SUPER_CAP 
-  void lcd_resume_menu(void) ;
+  void lcd_recover_menu(void) ;
 #endif
   extern uint8_t lcdDrawUpdate;
   inline void lcd_refresh() { lcdDrawUpdate = LCDVIEW_CLEAR_CALL_REDRAW; }
