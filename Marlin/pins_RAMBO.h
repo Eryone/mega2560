@@ -57,9 +57,12 @@
 #define Z_MAX_PIN          30
 
 #if ENABLED(BLTOUCH)
-#define Z_MIN_PIN          Z_MAX_PIN 
+	#define Z_MIN_PIN          Z_MAX_PIN 
+#elif ENABLED(FIX_MOUNTED_PROBE)
+	#define Z_MIN_PIN    23
 #else
-#define Z_MIN_PIN          10 
+
+	#define Z_MIN_PIN          10 
 #endif
 
 
