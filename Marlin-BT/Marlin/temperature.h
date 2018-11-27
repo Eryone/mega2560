@@ -402,6 +402,7 @@ class Temperature {
       static void start_watching_heater(const uint8_t e = 0);
     #endif
 
+
     static void setTargetHotend(const int16_t celsius, const uint8_t e) {
       #if HOTENDS == 1
         UNUSED(e);

@@ -991,12 +991,16 @@ void gcode_line_error(const char* err, bool doFlush = true) {
 
 ///////////////
 #define BT_BUF 64
-void proess_bt_commands()
+
+char proess_bt_commands()
 {
 	int c;
-	static char serial_line_buffer[BT_BUF],cn=0,bt_status=1/*  0 idle; 1 scaning; 2 connected; 3 disconnected*/;
+	
+	static char serial_line_buffer[BT_BUF],cn=0,bt_status=0/*  0 idle; 1 scaning; 2 connected; 3 disconnected*/;
+	//if(thermalManager.current_temperature[0]>200)
+	//	return;
 	 if (Serial3.available()==NULL)
-	 	return;
+	 	return 0;
 	 	
 	 while ((c = Serial3.read()) >= 0)
 	 {
@@ -1018,7 +1022,9 @@ void proess_bt_commands()
 				Serial3.println(F("C"));
 				cn=0;
 				memset(serial_line_buffer,0,BT_BUF);
-				bt_status=2;
+				while ((c = Serial3.read()) >= 0);// clear buf
+				return bt_status;
+				//bt_status=2;
 			}
 			// no device
 			else if(strstr_P(serial_line_buffer, PSTR("No Devices")))
@@ -1060,35 +1066,47 @@ void proess_bt_commands()
 				}
 				memset(serial_line_buffer,0,BT_BUF);
 				cn=0;
-			}
-			else if(thermalManager.current_temperature[0]<5)
+				while ((c = Serial3.read()) >= 0);// clear buf
+				return bt_status;
+			}	
+			/*else if(serial_char=='P')
 			{
-				 if(strstr_P(serial_line_buffer, PSTR("Simple")))
-				 {
-					Serial3.println(F("G"));
-					memset(serial_line_buffer,0,BT_BUF);
-					cn=0;
-				 }
-			}
+				cn=0;
+				serial_line_buffer[cn]=0;
+				enqueue_and_echo_commands_P(PSTR("G1 E20"));
+			}*/
 	
 		}
 		if(bt_status!=2&&cn>=8)
 		{
-			if(strstr_P(serial_line_buffer, PSTR("Connecting0x")))
+			/*if(strstr_P(serial_line_buffer, PSTR("Param Update")))
 			{
 				bt_status=2;
 				//Serial3.println(F("C"));
+				Serial3.println(F("G"));
 				memset(serial_line_buffer,0,BT_BUF); 
 				cn=0;
+				while ((c = Serial3.read()) >= 0);// clear buf
+				return bt_status;
 
+			}			
+			else if(strstr_P(serial_line_buffer, PSTR("Found")))
+			{
+				
+				memset(serial_line_buffer,0,BT_BUF);
+				cn=0;
+				//bt_status=2;
+				//while ((c = Serial3.read()) >= 0);// clear buf
+				//return bt_status;
 			}
-			else if(strstr_P(serial_line_buffer, PSTR("Connected")))
+			else */if(strstr_P(serial_line_buffer, PSTR("Connected")))
 			{
 				bt_status=2;
 				memset(serial_line_buffer,0,BT_BUF); 
 				cn=0;
 
 			}
+			/*
 			else if(strstr_P(serial_line_buffer, PSTR("Connecting")))
 			{
 				//bt_status=3;
@@ -1097,10 +1115,10 @@ void proess_bt_commands()
 				memset(serial_line_buffer,0,BT_BUF); 
 				cn=0;
 
-			}
+			}*/
 				
 		}
-		if(cn>=8)
+		if(cn>=5)
 		{
 			if(strstr_P(serial_line_buffer, PSTR("Disconnect")))
 			{
@@ -1109,25 +1127,30 @@ void proess_bt_commands()
 				Serial3.println(F("D"));
 				bt_status=1;
 				memset(serial_line_buffer,0,BT_BUF);
+				while ((c = Serial3.read()) >= 0);// clear buf
+				return bt_status;
 
 			}
 			// host bt reboot
 			if(strstr_P(serial_line_buffer, PSTR("Central0x")))
 			{
 			//	bt_status=3;
+				
 				cn=0;
 				bt_status=1;
 				memset(serial_line_buffer,0,BT_BUF);
 				Serial3.println(F("D"));
+				while ((c = Serial3.read()) >= 0);// clear buf
+				return bt_status;	
 
 			}
 		}
-		Serial.print(serial_char, 0);
+		 Serial.print(serial_char, 0);//debug 
 			//Serial.println(serial_line_buffer);
 	   
 	 }
 	
-	
+	return bt_status;	
 
 }
 
@@ -8126,7 +8149,6 @@ inline void gcode_M104() {
  * M105: Read hot end and bed temperature
  */
 inline void gcode_M105() {
-	//Serial3.println(F("D"));
 
   if (get_target_extruder_from_command(105)) return;
 
@@ -8149,6 +8171,8 @@ inline void gcode_M954() {
 		Serial3.println(F("G"));
 	else if (parser.seenval('S'))
 		Serial3.println(F("t189;"));
+	else if (parser.seenval('I'))
+		Serial3.println(F("I"));
 	
 }
 
@@ -8202,6 +8226,10 @@ inline void gcode_M954() {
       #endif // EXTRA_FAN_SPEED
       const uint16_t s = parser.ushortval('S', 255);
       fanSpeeds[p] = MIN(s, 255U);
+	  char tmp_f[10];
+	  sprintf(tmp_f,"r%d;",fanSpeeds[0]);
+	   
+	  Serial3.println(tmp_f);
     }
   }
 
@@ -8210,7 +8238,13 @@ inline void gcode_M954() {
    */
   inline void gcode_M107() {
     const uint16_t p = parser.ushortval('P');
-    if (p < FAN_COUNT) fanSpeeds[p] = 0;
+    if (p < FAN_COUNT)
+    {
+		fanSpeeds[p] = 0;
+
+	  // Serial3.println("r0;");
+	   Serial3.println("r0;");
+    }
   }
 
 #endif // FAN_COUNT > 0
@@ -8481,6 +8515,7 @@ inline void gcode_M109() {
       }
 
       now = millis();
+	  proess_bt_commands();
       if (ELAPSED(now, next_temp_ms)) { //Print Temp Reading every 1 second while heating up.
         next_temp_ms = now + 1000UL;
         thermalManager.print_heaterstates();
@@ -14275,6 +14310,7 @@ void disable_e_stepper(const uint8_t e) {
 }
 
 void disable_e_steppers() {
+	 
   disable_E0();
   disable_E1();
   disable_E2();
@@ -14657,10 +14693,10 @@ void setup() {
 
   MYSERIAL0.begin(BAUDRATE);
   Serial3.begin(57600);
-  Serial3.println(F("I")); //disconnect
-  //Serial3.println(F("==========end of this loop===serial3 luojin========="));
+  Serial3.println(F("I")); //disconnect 
   
-  proess_bt_commands();
+  
+  ////////////
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START();
 
@@ -14705,7 +14741,7 @@ void setup() {
   // Load data from EEPROM if available (or use defaults)
   // This also updates variables in the planner, elsewhere
   (void)settings.load();
-  proess_bt_commands();
+
   #if HAS_M206_COMMAND
     // Initialize current position based on home_offset
     COPY(current_position, home_offset);
@@ -14750,7 +14786,7 @@ void setup() {
   #if HAS_BED_PROBE
     endstops.enable_z_probe(false);
   #endif
-  proess_bt_commands();
+
 
   #if ENABLED(USE_CONTROLLER_FAN)
     SET_OUTPUT(CONTROLLER_FAN_PIN); //Set pin used for driver cooling fan
@@ -14807,15 +14843,19 @@ void setup() {
     fanmux_init();
   #endif
 
+
+  
   lcd_init();
   lcd_reset_status();
-  proess_bt_commands();
-  //Serial3.println(F("D"));
+  
+ 
+ //waiting for bt reboot
+ while(proess_bt_commands()==0);
 
   #if ENABLED(SHOW_BOOTSCREEN)
     lcd_bootscreen();
   #endif
-  proess_bt_commands();
+ 
   #if ENABLED(MIXING_EXTRUDER) && MIXING_VIRTUAL_TOOLS > 1
     // Virtual Tools 0, 1, 2, 3 = Filament 1, 2, 3, 4, etc.
     for (uint8_t t = 0; t < MIXING_VIRTUAL_TOOLS && t < MIXING_STEPPERS; t++)
@@ -14908,13 +14948,8 @@ void setup() {
  *  - Call LCD update
  */
 void loop() {
-
-
- 
-  	  proess_bt_commands();
-	
-
-
+  
+  proess_bt_commands();
 
   #if ENABLED(SDSUPPORT)
 
