@@ -104,7 +104,11 @@ void Endstops::init() {
 
   #if HAS_Z_MIN
     #if ENABLED(ENDSTOPPULLUP_ZMIN)
-      SET_INPUT_PULLUP(Z_MIN_PIN);
+	  #if ENABLED(FIX_MOUNTED_PROBE)
+		SET_INPUT(Z_MIN_PIN);
+	  #else
+		SET_INPUT_PULLUP(Z_MIN_PIN);
+	  #endif
     #else
       SET_INPUT(Z_MIN_PIN);
     #endif
