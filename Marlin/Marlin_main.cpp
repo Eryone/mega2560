@@ -1190,8 +1190,11 @@ inline void get_serial_commands() {
           }
         }
         else if (n == -1) {
+		  char dat_tmp[96];	
           SERIAL_ERROR_START();
           SERIAL_ECHOLNPGM(MSG_SD_ERR_READ);
+		  sprintf_P(dat_tmp,PSTR("M21"));
+		  enqueue_and_echo_command(dat_tmp);
         }
         if (sd_char == '#') stop_buffering = true;
 
