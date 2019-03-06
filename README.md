@@ -1,8 +1,10 @@
 # marlin_Atmel2560
 
-Marlin 1.1.9
+1,Marlin 1.1.9
 
-power off recovery
+2,TMC2208 module is based on watterott/SilentStepStick
+https://github.com/watterott/SilentStepStick
+
 
 
 
