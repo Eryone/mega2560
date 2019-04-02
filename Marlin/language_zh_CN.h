@@ -30,6 +30,8 @@
 #ifndef LANGUAGE_ZH_CN_H
 #define LANGUAGE_ZH_CN_H
 
+//#define  zh_CN   1234
+
 #define CHARSIZE 3
 
 #define WELCOME_MSG                         MACHINE_NAME _UxGT("已就绪.")  //" ready."
