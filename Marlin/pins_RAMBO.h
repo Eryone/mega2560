@@ -57,7 +57,7 @@
 #define Z_MAX_PIN          30
 
 #if ENABLED(BLTOUCH)
-	#define Z_MIN_PIN          23
+	#define Z_MIN_PIN          30
 #elif ENABLED(FIX_MOUNTED_PROBE)
 	#define Z_MIN_PIN    24
 #else
@@ -69,7 +69,7 @@
 //
 // Servos
 //
-#define SERVO0_PIN        30/* X_MAX_PIN//22   // Motor header MX1*/
+#define SERVO0_PIN        23/* X_MAX_PIN//22   // Motor header MX1*/
 #define SERVO1_PIN         23   // Motor header MX2
 #define SERVO2_PIN         24   // Motor header MX3
 #define SERVO3_PIN          5   // PWM header pin 5
