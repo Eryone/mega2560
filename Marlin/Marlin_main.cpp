@@ -14832,7 +14832,12 @@ void loop() {
 		enqueue_and_echo_command(dat_tmp);
 		sprintf_P(dat_tmp,PSTR("G28 Y"));
 		SERIAL_ECHOLN(dat_tmp);
-		enqueue_and_echo_command(dat_tmp);			 
+		enqueue_and_echo_command(dat_tmp);		
+		
+		sprintf_P(dat_tmp,PSTR("M106 S200"));
+		SERIAL_ECHOLN(dat_tmp);
+		enqueue_and_echo_command(dat_tmp);	
+		
 		SBI(axis_homed, Z_AXIS);
 		SBI(axis_known_position, Z_AXIS);
 		recovery_detect_cap.recovery=2;
