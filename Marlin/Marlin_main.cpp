@@ -14703,7 +14703,7 @@ void setup() {
   #endif
 #if POWER_LOSS_RECOVER_SUPER_CAP  
  /////////////
-  pinMode(44, INPUT);
+  pinMode(POWER_LOSS_DETECT_PIN, INPUT);
    
   if(recovery_detect_cap.recovery==3)
    {

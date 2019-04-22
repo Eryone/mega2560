@@ -1869,7 +1869,7 @@ void Temperature::isr() {
 #if POWER_LOSS_RECOVER_SUPER_CAP
 		  char tmp_d[32];
 		  static char  test=0;
-		 if((digitalRead(44)==0)&&(recovery_detect_cap.file_name[0])&&(recovery_detect_cap.recovery==0)&&(print_job_timer.isRunning()==true))// power off
+		 if((digitalRead(POWER_LOSS_DETECT_PIN)==0)&&(recovery_detect_cap.file_name[0])&&(recovery_detect_cap.recovery==0)&&(print_job_timer.isRunning()==true))// power off
 		  {
 			// SERIAL_ECHOLN("Down0");
 			// enquecommand("M929");

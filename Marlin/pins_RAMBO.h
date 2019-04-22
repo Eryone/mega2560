@@ -46,7 +46,7 @@
 
 #define BOARD_NAME "Rambo"
 
-
+#define POWER_LOSS_DETECT_PIN   44
 //
 // Limit Switches
 //
