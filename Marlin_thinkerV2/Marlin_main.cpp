@@ -14768,7 +14768,7 @@ void loop() {
 
 ////////////////////////////
   static char fan_hotend=0;
-  if(thermalManager.current_temperature[0]>100&&fan_hotend==0)
+  if(thermalManager.current_temperature[0]>50&&fan_hotend==0)
   {
 	 char data_tmp[96];
 	  sprintf_P(data_tmp,PSTR("temp:"));
@@ -14781,7 +14781,7 @@ void loop() {
 	fan_hotend=1;
 
   }
-  else if (thermalManager.current_temperature[0]<100&&fan_hotend==1)
+  else if (thermalManager.current_temperature[0]<50&&fan_hotend==1)
   {
 	   char data_tmp[96];
 	   fan_hotend=0;
