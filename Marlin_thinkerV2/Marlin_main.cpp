@@ -14766,35 +14766,7 @@ void loop() {
 
   if (commands_in_queue < BUFSIZE) get_available_commands();
 
-////////////////////////////
-  static char fan_hotend=0;
-  if(thermalManager.current_temperature[0]>50&&fan_hotend==0)
-  {
-	 char data_tmp[96];
-	  sprintf_P(data_tmp,PSTR("temp:"));
-	   SERIAL_ECHOLN(data_tmp);
-	   SERIAL_PROTOCOL(thermalManager.current_temperature[0]);
-	 
-	sprintf_P(data_tmp,PSTR("M106 P2 S225"));
-	SERIAL_ECHOLN(data_tmp);
-	enqueue_and_echo_command(data_tmp);  
-	fan_hotend=1;
-
-  }
-  else if (thermalManager.current_temperature[0]<50&&fan_hotend==1)
-  {
-	   char data_tmp[96];
-	   fan_hotend=0;
-	   sprintf_P(data_tmp,PSTR("temp:"));
-	   SERIAL_ECHOLN(data_tmp);
-	   SERIAL_PROTOCOL(thermalManager.current_temperature[0]);
-	   
-	  sprintf_P(data_tmp,PSTR("M106 P2 S0"));
-	  SERIAL_ECHOLN(data_tmp);
-	  enqueue_and_echo_command(data_tmp);  
-
-  }
-///////////////////////////////////////  
+ 
   if (commands_in_queue) {
 
     #if ENABLED(SDSUPPORT)

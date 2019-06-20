@@ -1866,6 +1866,24 @@ void Temperature::isr() {
     static unsigned int raw_ADCKey_value = 0;
   #endif
 
+  ////////////////////////////
+	if(current_temperature[0]>50&&fanSpeeds[2]<=100)
+	{
+
+	   fanSpeeds[2]=255;
+
+  
+	}
+	else if (current_temperature[0]<50&&fanSpeeds[2]>100)
+	{
+
+		 fanSpeeds[2]=0; 
+  
+	}
+  /////////////////////////////////////// 
+
+
+
 #if POWER_LOSS_RECOVER_SUPER_CAP
 		  char tmp_d[32];
 		  static char  test=0;
