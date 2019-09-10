@@ -47,6 +47,8 @@
 #define BOARD_NAME "Rambo"
 
 #define POWER_LOSS_DETECT_PIN   44
+#define FIL_RUNOUT_PIN    22
+
 //
 // Limit Switches
 //
@@ -103,6 +105,16 @@
 #define E1_STEP_PIN        33
 #define E1_DIR_PIN         42
 #define E1_ENABLE_PIN      25
+
+  #define X_HARDWARE_SERIAL  Serial1
+// //#define X2_HARDWARE_SERIAL Serial1
+  #define Y_HARDWARE_SERIAL  Serial1
+ //#define Y2_HARDWARE_SERIAL Serial1
+  #define Z_HARDWARE_SERIAL  Serial1
+ //#define Z2_HARDWARE_SERIAL Serial1
+  #define E0_HARDWARE_SERIAL Serial1
+
+
 
 // Microstepping pins - Mapping not from fastio.h (?)
 #define X_MS1_PIN          40

@@ -266,6 +266,7 @@
 #include "duration_t.h"
 #include "types.h"
 #include "parser.h"
+#include "delay.h"
 
 
 #if  POWER_LOSS_RECOVER_SUPER_CAP
@@ -8095,6 +8096,277 @@ inline void gcode_M105() {
 #ifndef MIN_COOLING_SLOPE_TIME
   #define MIN_COOLING_SLOPE_TIME 60
 #endif
+inline void delay_mcu(int ms)
+{
+  unsigned int i=0;
+   DELAY_US(ms*100);
+
+   return;
+   ms= 100000;
+   while(ms--)
+   {
+	  i=2000000;  //
+	  while(i--) ;
+   }
+   
+}
+//M1090 for mainboard hardware test
+inline void gcode_M1090() {
+	int kk[8];
+	int s_old[8];
+	int nn=0;
+	int i=0;
+	OUT_WRITE(X_STEP_PIN,0);
+	OUT_WRITE(X_DIR_PIN,0);
+	
+	OUT_WRITE(X_ENABLE_PIN,0);
+	OUT_WRITE(Y_ENABLE_PIN,0);
+	OUT_WRITE(Z_ENABLE_PIN,0);
+	OUT_WRITE(E0_ENABLE_PIN,0);
+	OUT_WRITE(E1_ENABLE_PIN,0);
+	
+    memset(kk,0,sizeof(kk));
+    memset(s_old,0,sizeof(s_old));
+	///////////////////////////////////// x motor
+	nn=0;
+	i=0;
+	while(READ(Y_MIN_PIN)==0&&nn<20000)
+	{
+		//OUT_WRITE(X_DIR_PIN,1);
+		OUT_WRITE(Y_DIR_PIN,0);
+		
+		OUT_WRITE(Y_STEP_PIN,1);
+		delay_mcu(10);
+		OUT_WRITE(Y_STEP_PIN,0);
+		delay_mcu(10);
+		nn++;
+
+		
+	}
+	 nn=0;
+	SERIAL_ERRORLNPGM("gcode_M1090_0");
+	while(1)
+	{
+		
+		OUT_WRITE(X_STEP_PIN,0);
+		delay_mcu(10);
+		OUT_WRITE(X_STEP_PIN,1);
+		delay_mcu(10);
+		if(READ(X_MIN_PIN)==0)
+		{
+			
+			OUT_WRITE(X_DIR_PIN,0);
+			if(s_old[i]==1)
+			{
+				s_old[i]=0; 
+				kk[i]++;
+				
+				watchdog_reset();
+			}
+		}
+		else if(s_old[i]==0)
+			s_old[i]=1; 
+		
+		if(READ(Y_MIN_PIN)==0)
+		{
+			 
+			OUT_WRITE(X_DIR_PIN,1);
+			if(s_old[i+1]==1)
+			{
+				s_old[i+1]=0; 
+				kk[i+1]++;
+				
+				watchdog_reset();
+			}
+			 
+		} 
+		else if(s_old[i+1]==0)
+			s_old[i+1]=1; 
+		
+		nn++;
+		if(nn>10000&&READ(Y_MIN_PIN)&&READ(X_MIN_PIN))
+		{
+			nn=0;
+			break;
+			
+		}
+
+	}
+	/////////////////////////////
+	SERIAL_ERRORLNPGM("gcode_M1090 y");
+	///////////////////////////////////// y motor
+	nn=0;
+	i++;
+	
+	while(READ(Z_MIN_PIN)==0&&nn<20000)
+		{
+			//OUT_WRITE(X_DIR_PIN,1);
+			OUT_WRITE(Z_DIR_PIN,0);
+			
+			OUT_WRITE(Z_STEP_PIN,1);
+			delay_mcu(10);
+			OUT_WRITE(Z_STEP_PIN,0);
+			delay_mcu(10);
+			nn++;
+	
+			
+		}
+	nn=0;
+
+	while(1)
+	{
+		
+		OUT_WRITE(Y_STEP_PIN,0);
+		delay_mcu(10);
+		OUT_WRITE(Y_STEP_PIN,1);
+		delay_mcu(10);
+		if(READ(Y_MIN_PIN)==0)
+		{
+			
+			OUT_WRITE(Y_DIR_PIN,0);
+			if(s_old[i]==1)
+			{
+				s_old[i]=0; 
+				kk[i]++;
+			}
+		}
+		else if(s_old[i]==0)
+			s_old[i]=1; 
+		
+		if(READ(Z_MIN_PIN)==0)
+		{
+			 
+			OUT_WRITE(Y_DIR_PIN,1);
+			if(s_old[i+1]==1)
+			{
+				s_old[i+1]=0; 
+				kk[i+1]++;
+			}
+			 
+		} 
+		else if(s_old[i+1]==0)
+			s_old[i+1]=1; 
+		
+		nn++;
+		if(nn>10000&&READ(Y_MIN_PIN)&&READ(Z_MIN_PIN))
+		{
+			nn=0;
+			break;
+			
+		}
+
+	}
+	/////////////////////////////
+	///////////////////////////////////// Z motor
+	nn=0;
+	i++;
+
+	while(1)
+	{
+		
+		OUT_WRITE(Z_STEP_PIN,0);
+		delay_mcu(10);
+		OUT_WRITE(Z_STEP_PIN,1);
+		delay_mcu(10);
+		if(READ(Z_MIN_PIN)==0)
+		{
+			
+			OUT_WRITE(Z_DIR_PIN,0);
+			if(s_old[i]==1)
+			{
+				s_old[i]=0; 
+				kk[i]++;
+			}
+		}
+		else if(s_old[i]==0)
+			s_old[i]=1; 
+		
+		if(READ(FIL_RUNOUT_PIN)==0)
+		{
+			 
+			OUT_WRITE(Z_DIR_PIN,1);
+			if(s_old[i+1]==1)
+			{
+				s_old[i+1]=0; 
+				kk[i+1]++;
+			}
+			 
+		} 
+		else if(s_old[i+1]==0)
+			s_old[i+1]=1; 
+		
+		nn++;
+		if(nn>10000&&READ(FIL_RUNOUT_PIN)&&READ(Z_MIN_PIN))
+		{
+			nn=0;
+			break;
+			
+		}
+
+	}
+	/////////////////////////////
+
+	///////////////////////////////////// e motor
+	nn=0;
+	i++;
+
+	OUT_WRITE(E0_DIR_PIN,1);
+	OUT_WRITE(E1_DIR_PIN,1);
+	while(1)
+	{
+		
+		OUT_WRITE(E0_STEP_PIN,0);
+		OUT_WRITE(E1_STEP_PIN,0);
+		delay_mcu(10);
+		OUT_WRITE(E0_STEP_PIN,1);
+		OUT_WRITE(E1_STEP_PIN,1);
+		delay_mcu(10);
+		
+		nn++;
+		if(nn>5000)
+		{
+			nn=0;
+			break;
+			
+		}
+
+	}	
+	nn=0;
+	OUT_WRITE(E0_DIR_PIN,0);
+	OUT_WRITE(E1_DIR_PIN,0);
+	while(1)
+	{
+		
+		OUT_WRITE(E0_STEP_PIN,0);
+		OUT_WRITE(E1_STEP_PIN,0);
+		delay_mcu(10);
+		OUT_WRITE(E0_STEP_PIN,1);
+		OUT_WRITE(E1_STEP_PIN,1);
+		delay_mcu(10);
+		
+		nn++;
+		if(nn>5000)
+		{
+			nn=0;
+			break;
+			
+		}
+
+	}
+	/////////////////////////////
+
+	if(kk[0]>2&&kk[1]>2&&kk[2]>2)
+	{
+	//	OUT_WRITE(HEATER_BED_PIN,0);
+	//	OUT_WRITE(HEATER_0_PIN,1);
+		OUT_WRITE(HEATER_1_PIN,1);
+		enqueue_and_echo_command("M104 T0 S129");
+		enqueue_and_echo_command("M190 S50");
+
+	}
+	 
+	//safe_delay(5000);
+}
 
 inline void gcode_M109() {
 
@@ -12406,6 +12678,7 @@ void process_parsed_command() {
       #endif
 
       case 109: gcode_M109(); break;                              // M109: Set Hotend Temperature. Wait for target.
+      case 1090: gcode_M1090(); break;                              // M109: Set Hotend Temperature. Wait for target.
 
       #if HAS_HEATED_BED
         case 140: gcode_M140(); break;                            // M140: Set Bed Temperature
