@@ -947,7 +947,7 @@ void CardReader::printingHasFinished() {
   }
 #endif // AUTO_REPORT_SD_STATUS
 
-#if ENABLED(POWER_LOSS_RECOVERY)
+#if ENABLED(POWER_LOSS_RECOVERY)||ENABLED(POWER_LOSS_RECOVER_SUPER_CAP)
 
   char job_recovery_file_name[4] = "bin";
 

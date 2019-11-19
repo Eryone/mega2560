@@ -5619,6 +5619,8 @@ void lcd_reset_alert_level() { lcd_status_message_level = 0; }
         #if BUTTON_EXISTS(BACK)
           if (BUTTON_PRESSED(BACK)) newbutton |= EN_D;
         #endif
+//		SERIAL_ECHOPAIR("n: ", BTN_EN1);
+//		SERIAL_ECHOPAIR("c: ", BTN_EN2);
 
         //
         // Directional buttons

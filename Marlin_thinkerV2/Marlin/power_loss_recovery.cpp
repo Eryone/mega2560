@@ -177,6 +177,7 @@ void check_print_job_recovery() {
         if (job_recovery_info.sd_filename[0] == '/') job_recovery_info.sd_filename[0] = ' ';
         sprintf_P(job_recovery_commands[ind++], PSTR("M23 %s"), job_recovery_info.sd_filename);
         sprintf_P(job_recovery_commands[ind++], PSTR("M24 S%ld T%ld"), job_recovery_info.sdpos, job_recovery_info.print_job_elapsed);
+        sprintf_P(job_recovery_commands[ind++], PSTR("M106 S200"));
 
         job_recovery_commands_count = ind;
 

@@ -609,7 +609,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 12, 100 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -617,7 +617,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 50, 1500 }
+#define DEFAULT_MAX_ACCELERATION      { 1500, 1000, 50, 1500 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -727,7 +727,7 @@
 
 #else
 // power lose detect pin and super capacitor for save data
-	#define POWER_LOSS_RECOVER_SUPER_CAP 1
+	//#define POWER_LOSS_RECOVER_SUPER_CAP 1
 
 #endif
 
@@ -1287,7 +1287,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-//#define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z }
