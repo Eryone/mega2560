@@ -7188,7 +7188,7 @@ inline void gcode_M17() {
     #endif
 
     else
-      card.getStatus();
+      card.getStatus(1);
   }
 
   /**
@@ -15128,7 +15128,9 @@ void loop() {
 	    settings.power_lose_save();		
 		enqueue_and_echo_command(dat_tmp);
 		SERIAL_ECHOLN(dat_tmp);
-	 
+	 	sprintf_P(dat_tmp,PSTR("M106 S200"));
+		SERIAL_ECHOLN(dat_tmp);
+		enqueue_and_echo_command(dat_tmp);	
 	}   
   
  #endif 

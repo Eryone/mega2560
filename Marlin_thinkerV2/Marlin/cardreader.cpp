@@ -465,13 +465,16 @@ void CardReader::removeFile(const char * const name) {
   }
 }
 
-uint32_t CardReader::getStatus() {
+uint32_t CardReader::getStatus(char disp) {
   uint32_t ret=0;	
   if (cardOK && sdprinting) {
-    SERIAL_PROTOCOLPGM(MSG_SD_PRINTING_BYTE);
-    SERIAL_PROTOCOL(sdpos);
-    SERIAL_PROTOCOLCHAR('/');
-    SERIAL_PROTOCOLLN(filesize);
+  	if(disp)
+  	{
+	    SERIAL_PROTOCOLPGM(MSG_SD_PRINTING_BYTE);
+	    SERIAL_PROTOCOL(sdpos);
+	    SERIAL_PROTOCOLCHAR('/');
+	    SERIAL_PROTOCOLLN(filesize);
+  	}
 	ret=sdpos;
   }
   else
@@ -942,7 +945,7 @@ void CardReader::printingHasFinished() {
     millis_t current_ms = millis();
     if (auto_report_sd_interval && ELAPSED(current_ms, next_sd_report_ms)) {
       next_sd_report_ms = current_ms + 1000UL * auto_report_sd_interval;
-      getStatus();
+      getStatus(1);
     }
   }
 #endif // AUTO_REPORT_SD_STATUS

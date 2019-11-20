@@ -55,7 +55,7 @@ public:
       const bool re_sort=false
     #endif
   );
-  uint32_t getStatus();
+  uint32_t getStatus(char disp);
   void printingHasFinished();
   void printFilename();
 

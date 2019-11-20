@@ -1899,7 +1899,7 @@ void Temperature::isr() {
 			//////////////
 		   recovery_detect_cap.Z_t=LOGICAL_Z_POSITION(current_position[Z_AXIS])*10;
 		   recovery_detect_cap.E_t=current_position[E_AXIS];
-		   recovery_detect_cap.pos_t=card.getStatus();
+		   recovery_detect_cap.pos_t=card.getStatus(0);
 		   recovery_detect_cap.recovery=3;
 		  // sprintf_P(tmp_d,PSTR("Z%u,E%lu,P%lu,T%u,B%u,"),Z_t,E_t,pos_t,T0_t,B_t);
 		  //		SERIAL_ECHOLN(tmp_d);
