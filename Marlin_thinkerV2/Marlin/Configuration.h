@@ -727,7 +727,7 @@
 
 #else
 // power lose detect pin and super capacitor for save data
-	//#define POWER_LOSS_RECOVER_SUPER_CAP 1
+	#define POWER_LOSS_RECOVER_SUPER_CAP 1
 
 #endif
 
