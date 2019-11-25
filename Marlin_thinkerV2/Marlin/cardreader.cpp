@@ -410,7 +410,10 @@ void CardReader::openFile(char * const path, const bool read, const bool subcall
 #if POWER_LOSS_RECOVER_SUPER_CAP 
 	  strcpy(recovery_detect_cap.file_name,  fname);
       SERIAL_ECHOLN(recovery_detect_cap.file_name);
-#endif	  
+#endif	
+#if ENABLED(POWER_LOSS_RECOVERY)
+	  memset(&job_recovery_info,0,sizeof(job_recovery_info));
+#endif
       SERIAL_PROTOCOLPAIR(MSG_SD_FILE_OPENED, fname);
       SERIAL_PROTOCOLLNPAIR(MSG_SD_SIZE, filesize);
       SERIAL_PROTOCOLLNPGM(MSG_SD_FILE_SELECTED);
@@ -989,7 +992,10 @@ void CardReader::printingHasFinished() {
 
   void CardReader::removeJobRecoveryFile() {
     job_recovery_info.valid_head = job_recovery_info.valid_foot = job_recovery_commands_count = 0;
-    if (jobRecoverFileExists()) {
+	SERIAL_PROTOCOLPGM("removeJobRecoveryFile");
+
+   // if (jobRecoverFileExists()) 
+	{
       closefile();
       removeFile(job_recovery_file_name);
       #if ENABLED(DEBUG_POWER_LOSS_RECOVERY)

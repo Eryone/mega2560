@@ -202,6 +202,7 @@ void save_job_recovery_info() {
     static millis_t next_save_ms; // = 0;  // Init on reset
     millis_t ms = millis();
   #endif
+//  SERIAL_PROTOCOLLNPGM("save_job_recovery_info...");
   if (
     // Save on every command
     #if ENABLED(SAVE_EACH_CMD_MODE)
@@ -216,7 +217,7 @@ void save_job_recovery_info() {
         ELAPSED(ms, next_save_ms) ||
       #endif
       // Save on every new Z height
-      (current_position[Z_AXIS] > 0 && current_position[Z_AXIS] > job_recovery_info.current_position[Z_AXIS])
+      (LOGICAL_Z_POSITION(current_position[X_AXIS]) > 0 &&LOGICAL_Z_POSITION(current_position[Z_AXIS]) > 0 && LOGICAL_Z_POSITION(current_position[Z_AXIS]) > job_recovery_info.current_position[Z_AXIS])
     #endif
   ) {
     #if SAVE_INFO_INTERVAL_MS > 0
@@ -229,6 +230,7 @@ void save_job_recovery_info() {
 
     // Machine state
     COPY(job_recovery_info.current_position, current_position);
+	job_recovery_info.current_position[Z_AXIS]=LOGICAL_Z_POSITION(current_position[Z_AXIS]);
     job_recovery_info.feedrate = feedrate_mm_s;
 
     #if HOTENDS > 1
@@ -266,7 +268,7 @@ void save_job_recovery_info() {
 
     // SD file position
     card.getAbsFilename(job_recovery_info.sd_filename);
-    job_recovery_info.sdpos = card.getIndex();
+    job_recovery_info.sdpos = card.getStatus(0);//card.getIndex();
 
     #if ENABLED(DEBUG_POWER_LOSS_RECOVERY)
       SERIAL_PROTOCOLLNPGM("Saving...");

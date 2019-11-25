@@ -639,8 +639,8 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#define DEFAULT_XJERK                 20.0
-#define DEFAULT_YJERK                 20.0
+#define DEFAULT_XJERK                 10.0
+#define DEFAULT_YJERK                 10.0
 #define DEFAULT_ZJERK                  0.4
 #define DEFAULT_EJERK                  5.0
 
@@ -727,7 +727,7 @@
 
 #else
 // power lose detect pin and super capacitor for save data
-	#define POWER_LOSS_RECOVER_SUPER_CAP 1
+//	#define POWER_LOSS_RECOVER_SUPER_CAP 1
 
 #endif
 

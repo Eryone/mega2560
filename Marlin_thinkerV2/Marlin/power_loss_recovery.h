@@ -35,6 +35,7 @@
 //#define SAVE_EACH_CMD_MODE
 //#define DEBUG_POWER_LOSS_RECOVERY
 
+#if POWER_LOSS_RECOVER_SUPER_CAP
 
 typedef struct 
 {
@@ -49,6 +50,7 @@ typedef struct
 } recovery_D;
 
 extern 	recovery_D recovery_detect_cap;
+#endif
 
 
 
