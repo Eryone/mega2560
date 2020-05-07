@@ -3,7 +3,7 @@
 
 ![GitHub Stars](https://img.shields.io/github/stars/Eryone/mega2560.svg)
 ![GitHub contributors](https://img.shields.io/github/contributors/Eryone/mega2560.svg)
-![GitHub followers](https://img.shields.io/github/followers/Eryone/mega2560.svg)
+![GitHub followers](https://img.shields.io/github/followers/Eryone.svg)
 
 - Author: 
   - **Tom Yuan**
