@@ -25,20 +25,20 @@
 
 ## Feature
 - Thinker V2 with TMC2208
-- **Filament change**
-- **Z babystep** 
-- **Mesh bed leveling or auto bed level**
-- **Remaining time display**
-- **LCD shows filament used**
+  - **Filament change**
+  - **Z babystep** 
+  - **Mesh bed leveling or auto bed level**
+  - **Remaining time display**
+  - **LCD shows filament used**
 
 - Thinker V2 with TMC2209
-- **TMC UART**
-- **Sensorless homing**
-- **Filament change**
-- **Z babystep** 
-- **Mesh bed leveling or auto bed level**
-- **Remaining time display**
-- **LCD shows filament used**
+  - **TMC UART**
+  - **Sensorless homing**
+  - **Filament change**
+  - **Z babystep** 
+  - **Mesh bed leveling or auto bed level**
+  - **Remaining time display**
+  - **LCD shows filament used**
 
 
 
