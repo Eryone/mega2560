@@ -1,7 +1,9 @@
 # Eryone Thinker V2 Firmware-Beta 
 ###  (Based on Marlin2.0.x)
 
-![img](https://img.shields.io/github/contributors/Eryone/mega2560.svg?color=red&label=%E8%B4%A1%E7%8C%AE%E4%BA%BA%E6%95%B0)
+![GitHub](https://img.shields.io/github/license/Eryone/mega2560.svg)
+![GitHub contributors](https://img.shields.io/github/contributors/Eryone/mega2560.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/Eryone/mega2560.svg)
 
 - Author: 
   - **Tom Yuan**
