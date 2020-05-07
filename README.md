@@ -1,7 +1,8 @@
-![](https://raw.githubusercontent.com/hackaday3D/marlin_Atmel2560/master/drivers/eryone.png)
-
 # Eryone Thinker V2 Firmware-Beta 
 ###  (Based on Marlin2.0.x)
+
+![img](https://img.shields.io/github/contributors/Eryone/mega2560/Thinker-V2-Firmware-Beta.svg?color=red&label=%E8%B4%A1%E7%8C%AE%E4%BA%BA%E6%95%B0)
+
 - Author: 
   - **Tom Yuan**
   - **Eryone** 
