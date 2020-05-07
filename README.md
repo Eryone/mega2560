@@ -23,6 +23,24 @@
 - *[Marlin offical](https://github.com/MarlinFirmware/Marlin)* Marlin offical firmware release main page
 - *[Marlin Gcode](https://marlinfw.org/meta/gcode/)* Marlin offical gcode introduction
 
+## Feature
+- Thinker V2 with TMC2208
+- **Filament change**
+- **Z babystep** 
+- **Mesh bed leveling or auto bed level**
+- **Remaining time display**
+- **LCD shows filament used**
+
+- Thinker V2 with TMC2209
+- **TMC UART**
+- **Sensorless homing**
+- **Filament change**
+- **Z babystep** 
+- **Mesh bed leveling or auto bed level**
+- **Remaining time display**
+- **LCD shows filament used**
+
+
 
 ## Join our group& Contact us
 - *[Facebook](https://www.facebook.com/groups/247271792709370/)*
