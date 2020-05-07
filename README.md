@@ -29,7 +29,7 @@
 - *[Marlin Gcode](https://marlinfw.org/meta/gcode/)* Marlin offical gcode introduction
 
 ## Build and Install
-To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [PlatformIO](http://docs.platformio.org/en/latest/ide.html#platformio-ide). Detailed build and install instructions are posted at:
+To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [Visual Studio Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html). Detailed build and install instructions are posted at:
 
 - *[Youtube Guide Video](https://www.youtube.com/watch?v=b2D4I9Yxejw)*
 
