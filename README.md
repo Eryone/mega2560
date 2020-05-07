@@ -20,7 +20,7 @@
 
 ### Thinker V2 Motherboard
 
-![](https://www.eryone.com/forum/download/file.php?id=162)
+![width=175](https://www.eryone.com/forum/download/file.php?id=162)
 
 ## Source               
 
