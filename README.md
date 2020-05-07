@@ -28,6 +28,12 @@
 - *[Marlin offical](https://github.com/MarlinFirmware/Marlin)* Marlin offical firmware release main page
 - *[Marlin Gcode](https://marlinfw.org/meta/gcode/)* Marlin offical gcode introduction
 
+## Build and Install
+To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [PlatformIO](http://docs.platformio.org/en/latest/ide.html#platformio-ide). Detailed build and install instructions are posted at:
+
+- *[Youtube Guide Video](https://www.youtube.com/watch?v=b2D4I9Yxejw)*
+
+
 ## Feature
 - Thinker V2 with TMC2208
   - **Filament change**
