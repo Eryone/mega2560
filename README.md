@@ -50,7 +50,7 @@
 - Choose the "Thinker V2" or "Thinker V2(TMC2209+Sensorless)" folder
 - Choose the stock config or auto level config
   The auto level config inculded the Inductive sensor and bltouch sensor
-  -  **The thinker SE user can't use the inductive sensor.Please don't use this type config**
+  -  **The thinker SE user can't use the inductive sensor. Please don't use this type config**
 - Replace the old config at "Marlin" folder
 
 ## Build and Install
