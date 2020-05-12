@@ -45,6 +45,14 @@
   - **Remaining time display**
   - **LCD shows filament used**
 
+## How to use the config
+- Open the config folder
+- Choose the "Thinker V2" or "Thinker V2(TMC2209+Sensorless)" folder
+- Choose the stock config or auto level config
+  The auto level config inculded the Inductive sensor and bltouch sensor
+  -  **The thinker SE user can't use the inductive sensor.Please don't use this type config**
+- Replace the old config at "Marlin" folder
+
 ## Build and Install
 To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html). Detailed build and install instructions at:
 
