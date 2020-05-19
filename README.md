@@ -47,7 +47,7 @@
 
 ## How to use the config
 - Open the config folder
-- Choose the "Thinker V2" or "Thinker V2(TMC2209+Sensorless)" folder
+- Choose the "Thinker V2"， "Thinker V2(TMC2209+Sensorless)" or "Thinker V2(Filament runout)" folder
 - Choose the stock config or auto level config.
   The auto level config inculded the Inductive sensor and bltouch sensor
   -  **The thinker SE user can't use the inductive sensor. Please don't use this type config**
