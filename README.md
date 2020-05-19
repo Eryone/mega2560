@@ -9,6 +9,8 @@
   - **Tom Yuan**
   - **Eryone** 
 
+## Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare
+
 ## Support 3D printer
 
 | 3D Printer Model    | Motherboard                | Stepper Driver    
