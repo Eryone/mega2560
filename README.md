@@ -53,7 +53,7 @@
   The auto level config inculded the Inductive sensor and bltouch sensor
   -  **The thinker SE user can't use the inductive sensor. Please don't use this type config**
 - Replace the old config at "Marlin" folder
-- Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare
+- **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
 ## Build and Install
 To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html). Detailed build and install instructions at:
