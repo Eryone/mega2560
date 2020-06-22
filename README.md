@@ -46,7 +46,8 @@
   - **Remaining time display**
   - **LCD shows filament used**
 
-## How to use the config
+## How to use the config&Guide
+- Go to "Thinker V2">"docs" to refer the guide of TMC2209 with Thinker V2 motherboard
 - Open the config folder
 - Choose the "Thinker V2"， "Thinker V2(TMC2209+Sensorless)" or "Thinker V2(Filament runout)" folder
 - Choose the stock config or auto level config.
