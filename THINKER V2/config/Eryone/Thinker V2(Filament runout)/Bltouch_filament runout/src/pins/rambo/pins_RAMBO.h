@@ -270,14 +270,6 @@
 
   #endif // !NEWPANEL
 
-#undef ST7920_DELAY_1
-#define ST7920_DELAY_1 DELAY_NS(125*20)
-#undef ST7920_DELAY_2
-#define ST7920_DELAY_2 DELAY_NS(125*20)
-#undef ST7920_DELAY_3
-#define ST7920_DELAY_3 DELAY_NS(125*20)
-
-
 #endif // HAS_SPI_LCD
 
 

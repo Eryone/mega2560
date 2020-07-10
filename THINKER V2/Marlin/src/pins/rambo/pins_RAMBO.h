@@ -56,7 +56,7 @@
 #define Y_MIN_PIN          11
 #define Y_MAX_PIN          23
 #define Z_MAX_PIN          30
-#define FIL_RUNOUT_PIN    -1//24
+//#define FIL_RUNOUT_PIN     4//24
 
 
 #if ENABLED(BLTOUCH)
@@ -269,14 +269,6 @@
     #define LCD_PINS_D7     29
 
   #endif // !NEWPANEL
-
-#undef ST7920_DELAY_1
-#define ST7920_DELAY_1 DELAY_NS(125*20)
-#undef ST7920_DELAY_2
-#define ST7920_DELAY_2 DELAY_NS(125*20)
-#undef ST7920_DELAY_3
-#define ST7920_DELAY_3 DELAY_NS(125*20)
-
 
 #endif // HAS_SPI_LCD
 
