@@ -57,9 +57,12 @@
 - **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
 ## Build and Install
+Added the hex file to folder, you can choose the correct one then upload it to your printer.
+Recommand to use the Cura upload it.
 To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html). Detailed build and install instructions at:
 
 - *[Youtube Guide Video](https://www.youtube.com/watch?v=b2D4I9Yxejw)*
+
 
 
 
