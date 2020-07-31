@@ -1123,27 +1123,27 @@ void test_tmc_connection(const bool test_x, const bool test_y, const bool test_z
   uint8_t axis_connection = 0;
 
   if (test_x) {
-    #if AXIS_IS_TMC(X)
+    //#if AXIS_IS_TMC(X)
       axis_connection += test_connection(stepperX);
-    #endif
+    //#endif
     #if AXIS_IS_TMC(X2)
       axis_connection += test_connection(stepperX2);
     #endif
   }
 
   if (test_y) {
-    #if AXIS_IS_TMC(Y)
+    //#if AXIS_IS_TMC(Y)
       axis_connection += test_connection(stepperY);
-    #endif
+    //#endif
     #if AXIS_IS_TMC(Y2)
       axis_connection += test_connection(stepperY2);
     #endif
   }
 
   if (test_z) {
-    #if AXIS_IS_TMC(Z)
+    //#if AXIS_IS_TMC(Z)
       axis_connection += test_connection(stepperZ);
-    #endif
+    //#endif
     #if AXIS_IS_TMC(Z2)
       axis_connection += test_connection(stepperZ2);
     #endif
@@ -1153,12 +1153,12 @@ void test_tmc_connection(const bool test_x, const bool test_y, const bool test_z
   }
 
   if (test_e) {
-    #if AXIS_IS_TMC(E0)
-      axis_connection += test_connection(stepperE0);
-    #endif
-    #if AXIS_IS_TMC(E1)
-      axis_connection += test_connection(stepperE1);
-    #endif
+    //#if AXIS_IS_TMC(E0)
+      //axis_connection += test_connection(stepperE0);
+    //#endif
+    //#if AXIS_IS_TMC(E1)
+      //axis_connection += test_connection(stepperE1);
+    //#endif
     #if AXIS_IS_TMC(E2)
       axis_connection += test_connection(stepperE2);
     #endif
@@ -1172,8 +1172,9 @@ void test_tmc_connection(const bool test_x, const bool test_y, const bool test_z
       axis_connection += test_connection(stepperE5);
     #endif
   }
+  #endif
+ }
+  //if (axis_connection) ui.set_status_P(GET_TEXT(MSG_ERROR_TMC));
+//}
 
-  if (axis_connection) ui.set_status_P(GET_TEXT(MSG_ERROR_TMC));
-}
-
-#endif // HAS_TRINAMIC
+//#endif // HAS_TRINAMIC
