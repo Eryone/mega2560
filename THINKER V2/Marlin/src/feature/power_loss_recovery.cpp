@@ -151,15 +151,20 @@ void PrintJobRecovery::save(const bool force/*=false*/, const bool save_queue/*=
   #ifndef POWER_LOSS_MIN_Z_CHANGE
     #define POWER_LOSS_MIN_Z_CHANGE 0.05  // Vase-mode-friendly out of the box
   #endif
-
+ #ifdef NOZZLE_PARK_POINT
+    xyz_pos_t park_point NOZZLE_PARK_POINT;
+ #endif
   // Did Z change since the last call?
-  if (force
+  if ((force
     #if DISABLED(SAVE_EACH_CMD_MODE)      // Always save state when enabled
       #if SAVE_INFO_INTERVAL_MS > 0       // Save if interval is elapsed
         || ELAPSED(ms, next_save_ms)
       #endif
       // Save if Z is above the last-saved position by some minimum height
-      || current_position.z > info.current_position.z + POWER_LOSS_MIN_Z_CHANGE
+      || current_position.z > info.current_position.z + POWER_LOSS_MIN_Z_CHANGE)
+      #ifdef NOZZLE_PARK_POINT
+      &&(current_position.x!=park_point.x||current_position.y!=park_point.y)
+      #endif
     #endif
   ) {
 
@@ -294,40 +299,7 @@ void PrintJobRecovery::resume() {
     gcode.process_subcommands_now_P(PSTR("M420 S0 Z0"));
   #endif
 
-  // Reset E, raise Z, home XY...
-  gcode.process_subcommands_now_P(PSTR("G92.9 E0"
-    #if Z_HOME_DIR > 0
 
-      // If Z homing goes to max, just reset E and home all
-      "\n"
-      "G28R0"
-      #if ENABLED(MARLIN_DEV_MODE)
-        "S"
-      #endif
-
-    #else // "G92.9 E0 ..."
-
-      // Set Z to 0, raise Z by RECOVERY_ZRAISE, and Home (XY only for Cartesian)
-      // with no raise. (Only do simulated homing in Marlin Dev Mode.)
-      #if ENABLED(BACKUP_POWER_SUPPLY)
-        "Z" STRINGIFY(POWER_LOSS_ZRAISE)    // Z-axis was already raised at outage
-      #else
-        "Z0\n"                              // Set Z=0
-        "G1Z" STRINGIFY(POWER_LOSS_ZRAISE)  // Raise Z
-      #endif
-      "\n"
-
-      "G28R0"
-      #if ENABLED(MARLIN_DEV_MODE)
-        "S"
-      #elif !IS_KINEMATIC
-        "XY"
-      #endif
-    #endif
-  ));
-
-  // Pretend that all axes are homed
-  axis_homed = axis_known_position = xyz_bits;
 
   char cmd[MAX_CMD_SIZE+16], str_1[16], str_2[16];
 
@@ -382,6 +354,40 @@ void PrintJobRecovery::resume() {
     }
   #endif
 
+  // Reset E, raise Z, home XY...
+  gcode.process_subcommands_now_P(PSTR("G92.9 E0"
+    #if Z_HOME_DIR > 0
+
+      // If Z homing goes to max, just reset E and home all
+      "\n"
+      "G28R0"
+      #if ENABLED(MARLIN_DEV_MODE)
+        "S"
+      #endif
+
+    #else // "G92.9 E0 ..."
+
+      // Set Z to 0, raise Z by RECOVERY_ZRAISE, and Home (XY only for Cartesian)
+      // with no raise. (Only do simulated homing in Marlin Dev Mode.)
+      #if ENABLED(BACKUP_POWER_SUPPLY)
+        "Z" STRINGIFY(POWER_LOSS_ZRAISE)    // Z-axis was already raised at outage
+      #else
+        "Z0\n"                              // Set Z=0
+        "G1Z" STRINGIFY(POWER_LOSS_ZRAISE)  // Raise Z
+      #endif
+      "\n"
+
+      "G28R0"
+      #if ENABLED(MARLIN_DEV_MODE)
+        "S"
+      #elif !IS_KINEMATIC
+        "XY"
+      #endif
+    #endif
+  ));
+
+  // Pretend that all axes are homed
+  axis_homed = axis_known_position = xyz_bits;
   // Restore print cooling fan speeds
   FANS_LOOP(i) {
     uint8_t f = info.fan_speed[i];

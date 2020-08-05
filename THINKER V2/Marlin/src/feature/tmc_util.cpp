@@ -1156,9 +1156,9 @@ void test_tmc_connection(const bool test_x, const bool test_y, const bool test_z
     //#if AXIS_IS_TMC(E0)
       //axis_connection += test_connection(stepperE0);
     //#endif
-    //#if AXIS_IS_TMC(E1)
-      //axis_connection += test_connection(stepperE1);
-    //#endif
+    #if AXIS_IS_TMC(E1)
+      axis_connection += test_connection(stepperE1);
+    #endif
     #if AXIS_IS_TMC(E2)
       axis_connection += test_connection(stepperE2);
     #endif
@@ -1171,10 +1171,9 @@ void test_tmc_connection(const bool test_x, const bool test_y, const bool test_z
     #if AXIS_IS_TMC(E5)
       axis_connection += test_connection(stepperE5);
     #endif
-  }
+   }
   #endif
- }
   //if (axis_connection) ui.set_status_P(GET_TEXT(MSG_ERROR_TMC));
-//}
+
 
 //#endif // HAS_TRINAMIC
