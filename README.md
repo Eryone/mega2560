@@ -34,7 +34,7 @@
   - **Filament change**
   - **Z babystep** 
   - **Mesh bed leveling or auto bed level**
-  - **Remaining time display**
+  - **SD card print percent**
   - **LCD shows filament used**
 
 - Thinker V2 with TMC2209
@@ -43,7 +43,7 @@
   - **Filament change**
   - **Z babystep** 
   - **Mesh bed leveling or auto bed level**
-  - **Remaining time display**
+  - **SD card print percent**
   - **LCD shows filament used**
 
 ## How to use the config&Guide
