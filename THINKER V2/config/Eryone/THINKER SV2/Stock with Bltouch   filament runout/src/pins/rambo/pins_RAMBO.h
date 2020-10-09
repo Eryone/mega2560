@@ -56,7 +56,7 @@
 #define Y_MIN_PIN          11
 #define Y_MAX_PIN          23
 #define Z_MAX_PIN          30
-//#define FIL_RUNOUT_PIN     10//24
+#define FIL_RUNOUT_PIN     10//24
 
 
 #if ENABLED(BLTOUCH)

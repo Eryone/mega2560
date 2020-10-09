@@ -14,8 +14,8 @@
 
 | 3D Printer Model    | Motherboard                | Stepper Driver    
 | ------------------- | -------------------------- | --------------
-| Eryone Thinker S    | Thinker V2 Motherboard     | TMC2208
-| Eryone Thinker S    | Thinker V2 Motherboard     | TMC2209
+| Eryone Thinker SV2  | Thinker V2 Motherboard     | TMC2208
+| Eryone Thinker SV2  | Thinker V2 Motherboard     | TMC2209
 | Eryone Thinker SE   | Thinker V2 Motherboard     | TMC2208
 | Eryone Thinker SE   | Thinker V2 Motherboard     | TMC2209
 
@@ -30,14 +30,14 @@
 - *[Marlin Gcode](https://marlinfw.org/meta/gcode/)* Marlin offical gcode introduction
 
 ## Feature
-- Thinker V2 with TMC2208
+- Thinker SV2/SE with TMC2208
   - **Filament change**
   - **Z babystep** 
   - **Mesh bed leveling or auto bed level**
   - **SD card print percent**
   - **LCD shows filament used**
 
-- Thinker V2 with TMC2209
+- Thinker SV2/SE with TMC2209
   - **TMC UART**
   - **Sensorless homing**
   - **Filament change**
@@ -46,24 +46,26 @@
   - **SD card print percent**
   - **LCD shows filament used**
 
-## How to use the config&Guide
-- Go to "Thinker V2">"docs" to refer the guide of TMC2209 with Thinker V2 motherboard
-- Open the config folder
-- Choose the "Thinker V2"， "Thinker V2(TMC2209+Sensorless)" or "Thinker V2(Filament runout)" folder
-- Choose the stock config or auto level config.
-  The auto level config inculded the Inductive sensor and bltouch sensor
-  -  **The thinker SE user can't use the inductive sensor. Please don't use this type config**
-- Replace the old config at "Marlin" folder
-- **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
 ## Build and Install
-Added the hex file to folder, you can choose the correct one then upload it to your printer.
-Recommand to use the Cura upload it.
+- **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
+We prepared the hex file, you can choose the correct one then upload it to your printer.
+Recommand to use the **Ultimaker Cura** upload it.
+Refer to this link:
+- *[Upload firmware via Cura](https://www.youtube.com/watch?v=SpdjvYkUQY)*
+
 To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html). Detailed build and install instructions at:
 
 - *[Youtube Guide Video](https://www.youtube.com/watch?v=b2D4I9Yxejw)*
+- **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
-
+## How to use the config&Guide
+** Notes: Before this section, if you are not familiar with the marlin then you should back to the previous section. **
+- Go to "Thinker V2"→"docs" to refer the guide of TMC2209 with Thinker V2 motherboard
+- Open the ”config“→“Eryone”→Then choose the correct model folder then enter
+- Copye the ** "configuration.h" and "configuration_adv.h" **
+- Then paste them to ** "Marlin" ** folder
+- **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
 
 ## Join our group& Contact us
