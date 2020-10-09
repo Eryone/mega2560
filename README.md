@@ -60,7 +60,7 @@ To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino
 - **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
 ## How to use the config&Guide
-** Notes: Before this section, if you are not familiar with the marlin then you should back to the previous section. **
+- Notes: Before this section, if you are not familiar with the marlin then you should back to the previous section.
 - Go to "Thinker V2"→"docs" to refer the guide of TMC2209 with Thinker V2 motherboard
 - Open the ”config“→“Eryone”→Then choose the correct model folder then enter
 - Copye the ** "configuration.h" and "configuration_adv.h" **
