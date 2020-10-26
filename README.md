@@ -52,7 +52,7 @@
 We prepared the hex file, you can choose the correct one then upload it to your printer.
 Recommand to use the **Ultimaker Cura** upload it.
 Refer to this link:
-- *[Upload firmware via Cura](https://www.youtube.com/watch?v=SpdjvYkUQY)*
+- *[Upload firmware via Cura](https://www.youtube.com/watch?v=SpdjvYkUQY4)*
 
 To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [VS Code](https://docs.platformio.org/en/latest/integration/ide/vscode.html). Detailed build and install instructions at:
 
