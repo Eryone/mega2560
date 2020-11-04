@@ -1,4 +1,4 @@
-# Eryone Thinker V2 Firmware-Beta 
+# Eryone Thinker V2 Firmware
 ###  (Based on Marlin2.0.x)
 
 ![GitHub Stars](https://img.shields.io/github/stars/Eryone/mega2560.svg)
