@@ -59,6 +59,9 @@ To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino
 - *[Youtube Guide Video](https://www.youtube.com/watch?v=b2D4I9Yxejw)*
 - **Please ues the "M502" and "M500" to reset the EEPROM when you uploaded the firwmare**
 
+### Change the language: Open the "configuration.h" then find this line:
+- "#define LCD_LANGUAGE" then set the language you want to set. Built it and upload it to your printer.
+
 ## How to use the config&Guide
 - Notes: Before this section, if you are not familiar with the marlin then you should back to the previous section.
 - Go to "Thinker V2"→"docs" to refer the guide of TMC2209 with Thinker V2 motherboard
